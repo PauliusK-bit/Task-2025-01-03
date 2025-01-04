@@ -11,8 +11,10 @@ let firstButton = document.createElement("button");
 currentElement.append(firstButton);
 let secondButton = document.createElement("button");
 currentElement.append(secondButton);
+
 // 3. h3 elemento tekstas turėtų būti „5"
 newElement.textContent = 5;
+
 // 4. Mygtukų tekstas turėtų būti „+" ir „-"
 firstButton.textContent = "+";
 secondButton.textContent = "-";
@@ -20,6 +22,7 @@ secondButton.textContent = "-";
 // 5. Sukurti „click" (paspaudimo) event listener'ius abiems mygtukams.
 firstButton.addEventListener("click", increaseNumber);
 secondButton.addEventListener("click", decreaseNumber);
+
 // 6. „-" mygtuko event listeneris turėtų iškviesti funkciją, kuri sumažina skaičių h3 elemente, o „+" mygtuko paspaudimas turėtų skaičių padidinti
 function decreaseNumber() {
   newElement.textContent = Number(newElement.textContent) - 1;
@@ -33,7 +36,8 @@ function increaseNumber() {
   disabledButton();
   updateNumberColor();
 }
-// 7. Jeigu skaitmuo h3 komponente yra mažesnis už du, tai „-" mygtukas turėtų patapti neveiksnus (disabled)- element.setAttribute('disabled', true) / element.removeAttribute('disabled')
+
+// 7. Jeigu skaitmuo h3 komponente yra mažesnis už du, tai „-" mygtukas turėtų patapti neveiksnus (disabled)
 function disabledButton() {
   if (Number(newElement.textContent) < 2) {
     secondButton.setAttribute("disabled", true);
@@ -45,7 +49,6 @@ function disabledButton() {
 disabledButton();
 
 // 8. Jeigu skaitmuo h3 komponente yra didesnis už 9, tai „+" mygtukas turėtų patapti neveiksnus (disabled)
-
 function disabledButtonSecond() {
   if (Number(newElement.textContent) > 9) {
     firstButton.setAttribute("disabled", true);
@@ -55,6 +58,7 @@ function disabledButtonSecond() {
 }
 
 disabledButtonSecond();
+
 // 9. Jeigu skaitmuo yra 5 arba daugiau, tai jo spalva turėtų būti žalia. Kitu atveju - raudona.
 function updateNumberColor() {
   if (Number(newElement.textContent) >= 5) {
@@ -65,17 +69,18 @@ function updateNumberColor() {
 }
 
 // 10. Sukurti naują mygtuką „Reset". Jį paspaudus viskas atstatoma į pradinę padėtį.
-
 let resetButton = document.createElement("button");
 currentElement.append(resetButton);
 resetButton.textContent = "Reset";
 
 function resetAll() {
-  newElement.textContent = 7;
+  newElement.textContent = 5;
   disabledButton();
   disabledButtonSecond();
-  firstButton.removeAttribute("disabled");
-  secondButton.removeAttribute("disabled");
+  disableButtonAddByFive();
+  disableButtonDeductByFive();
+  disableButtonDecreaseByTwo();
+  disabledAddTwoButton();
 }
 
 resetButton.addEventListener("click", resetAll);
@@ -85,13 +90,15 @@ resetButton.addEventListener("click", resetAll);
 let addElement = document.createElement("button");
 currentElement.append(addElement);
 addElement.textContent = "+2";
+
 function increaseNumberByTwo() {
   newElement.textContent = Number(newElement.textContent) + 2;
   updateNumberColor();
+  disableButtonDecreaseByTwo();
+  disabledAddTwoButton();
 }
 addElement.addEventListener("click", increaseNumberByTwo);
-increaseNumberByTwo();
-// 11.2. Atima dvejetą iš esamos h3 elemento reikšmės.
+
 let deductElement = document.createElement("button");
 currentElement.append(deductElement);
 deductElement.textContent = "-2";
@@ -99,14 +106,79 @@ deductElement.textContent = "-2";
 function decreaseNumberByTwo() {
   newElement.textContent = Number(newElement.textContent) - 2;
   updateNumberColor();
+  disableButtonDecreaseByTwo();
+  disabledAddTwoButton();
 }
 deductElement.addEventListener("click", decreaseNumberByTwo);
-decreaseNumberByTwo();
+
+function disableButtonDecreaseByTwo() {
+  if (Number(newElement.textContent) < 2) {
+    deductElement.setAttribute("disabled", true);
+  } else {
+    deductElement.removeAttribute("disabled");
+  }
+}
+
+disableButtonDecreaseByTwo();
+
+function disabledAddTwoButton() {
+  if (Number(newElement.textContent) >= 9) {
+    addElement.setAttribute("disabled", true);
+  } else {
+    addElement.removeAttribute("disabled");
+  }
+}
+
+disabledAddTwoButton();
 
 // 12. Sukurti du naujus mygtukus, kurie:
 // 12.1. Prideda 5 prie esamos h3 elemento reikšmės.
-// 12.2. Atima 5 iš esamos h3 elemento reikšmės.
 
+let addElementByFive = document.createElement("button");
+currentElement.append(addElementByFive);
+addElementByFive.textContent = "+5";
+
+function addElementBy5() {
+  newElement.textContent = Number(newElement.textContent) + 5;
+  updateNumberColor();
+  disableButtonAddByFive();
+}
+
+addElementBy5();
+// 12.2. Atima 5 iš esamos h3 elemento reikšmės.
+let deductElementByFive = document.createElement("button");
+currentElement.append(deductElementByFive);
+deductElementByFive.textContent = "-5";
+
+function deductElementBy5() {
+  newElement.textContent = Number(newElement.textContent) - 5;
+  updateNumberColor();
+  disableButtonDeductByFive();
+  disableButtonAddByFive();
+}
+
+deductElementBy5();
+
+addElementByFive.addEventListener("click", addElementBy5);
+deductElementByFive.addEventListener("click", deductElementBy5);
+
+function disableButtonAddByFive() {
+  if (Number(newElement.textContent) >= 9) {
+    addElementByFive.setAttribute("disabled", true);
+  } else {
+    addElementByFive.removeAttribute("disabled");
+  }
+}
+disableButtonAddByFive();
+
+function disableButtonDeductByFive() {
+  if (Number(newElement.textContent) < 2) {
+    deductElementByFive.setAttribute("disabled", true);
+  } else {
+    deductElementByFive.removeAttribute("disabled");
+  }
+}
+disableButtonDeductByFive();
 // 13. Sukurti input elementą (number tipo) ir jame įrašytą skaičių pridėti kaip h3 elemento tekstą.
 
 // 14. Sukurti naują elementą (h4) ir jį pridėti į „numbers" elemento pabaigą.
